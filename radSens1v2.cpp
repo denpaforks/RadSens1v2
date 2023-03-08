@@ -25,7 +25,7 @@ bool ClimateGuard_RadSens1v2::radSens_init()
 
 bool ClimateGuard_RadSens1v2::updateData()
 {
-    Wire.requestFrom(_sensor_address, 21);
+    Wire.requestFrom(_sensor_address, (uint8_t)21);
     for (int i = 0; i < 21; i++)
     {
         _data[i] = Wire.read();
