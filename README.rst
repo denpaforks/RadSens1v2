@@ -1,7 +1,9 @@
 Description
 ==============
-ESPHome custom component sample for Climateguard RadSens
+ESPHome custom component sample for Climateguard RadSens 1v2
 
+.. note::
+    Possible problems with Radsens 1v5 boards `workaround <https://github.com/maaad/RadSens1v2/issues/3#issuecomment-1289578773>`_
 
 Install
 ===============
@@ -10,17 +12,18 @@ Install
 
  git clone https://github.com/maaad/RadSens1v2 /usr/share/hassio/homeassistant/esphome/RadSens1v2
 
-Add to device config
+Add to device config for climateguard/RadSens
 
 .. code-block:: yaml
 
  esphome:
    ...
-   includes: 
-    - RadSens1v2/radSens1v2.h
-    - RadSens1v2/radSens1v2.cpp
-    - RadSens1v2/_radSens1v2.h
-  
+  libraries:
+    - Wire
+    - "climateguard/ClimateGuard RadSens"
+  includes: 
+    - RadSens1v2/_CG_RadSens.h
+
   i2c:
 
  ...
@@ -28,9 +31,9 @@ Add to device config
  sensor:
    - platform: custom
      lambda: |-
-       auto rad_sens = new RadSens();
+       auto rad_sens = new MyRadSens();
        App.register_component(rad_sens);
-       return {rad_sens->IntensityDynamic_Sensor, rad_sens->IntensityStatic_Sensor};
+       return {rad_sens->IntensityDynamic_Sensor, rad_sens->IntensityStatic_Sensor, rad_sens->CurrentCPM_Sensor, rad_sens->MaxCPM_Sensor};
      sensors:
        - name: "Dynamic intensity"
          id: dynamic_intensity
@@ -39,6 +42,12 @@ Add to device config
        - name: "Static intensity"
          accuracy_decimals: 1
          unit_of_measurement: μR/h
+       - name: "Current CPM"
+         accuracy_decimals: 1
+         unit_of_measurement: CPM
+       - name: "Max CPM"
+         accuracy_decimals: 1
+         unit_of_measurement: CPM
 
 
 References
